@@ -1,0 +1,128 @@
+@import "./assets/fonts/iconfont.css";
+
+page {
+  font-size: $font-32;
+}
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+  overflow: auto;
+}
+
+.view-content {
+  padding: 0 30px;
+  background-color: $white;
+}
+
+.fixed {
+  position: fixed;
+  width: 100%;
+  background-color: $white;
+  z-index: 98;
+}
+
+.small-desc {
+  color: $desc-color;
+  font-size: $font-26;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mask {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  transition: 0.3s;
+  z-index: -1;
+  &.show {
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 90;
+  }
+}
+
+.empty-container {
+  text-align: center;
+  color: $desc-color;
+  font-size: $font-basic;
+  padding: 30px 0;
+
+  .iconempty {
+    font-size: 80px;
+    margin-bottom: 10px;
+  }
+}
+
+.btn {
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  font-size: $font-basic;
+  border-radius: $border-radius-10;
+  border: $border;
+  &-blue {
+    color: #8099af;
+    border-color: $bg-color;
+    background-color: $bg-color;
+  }
+
+  &-yellow {
+    color: $white;
+    border-color: $sale-2;
+    background-color: $sale-2;
+  }
+
+  &-primary {
+    color: $white;
+    border-color: $primary-color;
+    background-color: $primary-color;
+  }
+
+  &-plain {
+    color: $primary-color;
+    border-color: $primary-color;
+    background-color: $white;
+  }
+
+  &-disabled {
+    color: $desc-color;
+    border-color: $bg2-color;
+    background-color: $bg2-color;
+  }
+
+  &-subtext {
+    font-size: $font-24;
+  }
+}
+
+.ovalbtn {
+  border-radius: 30px;
+  height: 50px;
+  line-height: 50px;
+  font-size: $font-basic;
+  padding: 2px 20px;
+
+  &::after {
+    border: 0;
+  }
+
+  &-pink {
+    color: $pink;
+    background-color: $white;
+  }
+  &-brown {
+    color: rgb(131, 80, 55);
+  }
+}
+
+.cut-line {
+  border-bottom: 1px solid $line-color;
+  clear: both;
+}

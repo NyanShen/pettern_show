@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "iconfont";
+  src: url("./iconfont.eot");
+  src: url("./iconfont.eot?#iefix") format("embedded-opentype"),
+    url("./iconfont.woff2") format("woff2"), url("./iconfont.woff") format("woff"),
+    url("./iconfont.ttf") format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont";
+  display: inline-block;
+  text-align: center;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.iconarrow-left-bold:before {
+  content: "\e685";
+}
+
+.icon-empty:before {
+  content: "\e6a6";
+}
+
+.icon-search:before {
+  content: "\e600";
+}
