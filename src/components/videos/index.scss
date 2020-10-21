@@ -1,0 +1,19 @@
+.videos {
+    .item {
+        &-video {
+            width: 100%;
+            height: 450px;
+        }
+
+        &-text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+
+            .icon-ArtboardCopy {
+                color: $search-actived;
+            }
+        }
+    }
+}

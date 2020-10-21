@@ -7,6 +7,7 @@ import useNavData from '@hooks/useNavData'
 import Photos from '@components/photos'
 import './index.scss'
 import Articles from '@components/articles'
+import Videos from '@components/videos'
 
 const Index = () => {
   const { appHeaderHeight, contentHeight } = useNavData()
@@ -112,6 +113,7 @@ const Index = () => {
         </View>
         <View className="content">
           {currentNav.englishName === 'Photo' && <Photos />}
+          {currentNav.englishName === 'Video' && <Videos />}
           {currentNav.englishName === 'Media' && <Articles />}
         </View>
       </ScrollView>

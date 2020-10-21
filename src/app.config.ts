@@ -10,6 +10,6 @@ export default {
     navigationBarBackgroundColor: '#ffffff',
     navigationBarTitleText: '',
     navigationBarTextStyle: 'black',
-    navigationStyle: 'custom'
-  }
+    navigationStyle: 'custom',
+  },
 } as Config
