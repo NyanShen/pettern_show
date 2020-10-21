@@ -36,14 +36,14 @@
         width: 100%;
         white-space: nowrap;
         font-size: 0;
+        transition: 0.2s;
         &-item {
             min-width: 86px;
             display: inline-block;
             font-size: $font-32;
             text-align: center;
             margin: 32px;
-            
-           
+
             .english-name {
                 font-size: $font-26;
             }
@@ -51,6 +51,42 @@
                 color: $search-actived;
                 border-bottom: 1px solid $search-actived;
             }
+        }
+    }
+}
+
+.action {
+    position: fixed;
+    right: 40px;
+    bottom: 60px;
+    transition: 0.3s;
+    &-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        .item-icon {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 50%;
+            background-color: $white;
+            box-shadow: 0 0 4px rgba($text-color, 0.3);
+            color: $title-color;
+            .iconfont {
+                font-size: 50px;
+            }
+        }
+        .item-text {
+            font-weight: bold;
+            font-size: $font-basic;
+            margin-top: 10px;
+            color: $white;
         }
     }
 }

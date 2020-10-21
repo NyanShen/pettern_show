@@ -15,6 +15,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-up:before {
+  content: "\e86f";
+}
+
+.icon-telephone-out:before {
+  content: "\e680";
+}
+
+.icon-ArtboardCopy:before {
+  content: "\e603";
+}
+
 .iconarrow-left-bold:before {
   content: "\e685";
 }
