@@ -16,7 +16,11 @@
 }
 
 .icon-up:before {
-  content: "\e86f";
+  content: "\e71f";
+}
+
+.icon-down:before {
+  content: "\e632";
 }
 
 .icon-telephone-out:before {
@@ -27,7 +31,7 @@
   content: "\e603";
 }
 
-.iconarrow-left-bold:before {
+.icon-arrow-left-bold:before {
   content: "\e685";
 }
 

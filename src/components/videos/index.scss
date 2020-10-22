@@ -10,9 +10,38 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 30px;
+            .title {
+                flex: 1;
+                font-size: $font-basic;
+                margin-right: 20px;
+                color: $title-color;
+            }
 
-            .icon-ArtboardCopy {
+            .sub-title {
+                flex: 1;
+                font-size: $font-26;
+                color: $text-color;
+            }
+
+            .button {
+                line-height: 60px;
+                padding: 0 14px;
+                background-color: $white;
+            }
+
+            .iconfont {
                 color: $search-actived;
+            }
+        }
+        &-folder {
+            line-height: 60px;
+            font-size: $font-26;
+            text-align: right;
+            color: $desc-color;
+            padding-right: 30px;
+
+            .iconfont {
+                padding-right: 10px;
             }
         }
     }
