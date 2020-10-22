@@ -1,50 +1,39 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View, Input, ScrollView, Text } from '@tarojs/components'
 import classnames from 'classnames'
 
+import app from '@services/request'
+import api from '@services/api'
 import NavBar from '@components/navbar'
 import useNavData from '@hooks/useNavData'
 import Photos from '@components/photos'
-import './index.scss'
-import Articles from '@components/articles'
 import Videos from '@components/videos'
+import Articles from '@components/articles'
+import './index.scss'
 
 const Index = () => {
   const { appHeaderHeight, contentHeight } = useNavData()
+  const [searchTitle, setSearchTitle] = useState<string>('')
   const [scroll, setScroll] = useState<any>({})
-  const [currentNav, setCurrentNav] = useState<any>({
-    id: '1',
-    chineseName: '图集',
-    englishName: 'Photo'
-  })
+  const [navData, setNavData] = useState<any[]>([])
+  const [currentNav, setCurrentNav] = useState<any>({})
+  const ref = useRef<any>({})
 
-  const navData = [
-    {
-      id: '1',
-      chineseName: '图集',
-      englishName: 'Photo'
-    },
-    {
-      id: '2',
-      chineseName: '视屏',
-      englishName: 'Video'
-    },
-    {
-      id: '3',
-      chineseName: '策划',
-      englishName: 'Planning'
-    },
-    {
-      id: '4',
-      chineseName: '媒体',
-      englishName: 'Media'
-    },
-    {
-      id: '5',
-      chineseName: '设计',
-      englishName: 'Design'
-    }
-  ]
+  useEffect(() => {
+    app.request({
+      url: app.apiUrl(api.getNewsCate),
+      data: {
+        status: 1
+      }
+    }, { loading: false }).then((result: any) => {
+      setNavData(result)
+      setCurrentNav(result[0])
+    })
+  }, [])
+
+  const handleNavClick = (item: any) => {
+    setCurrentNav(item)
+  }
 
   const handleScroll = (e: any) => {
     const top = e.detail.scrollTop
@@ -64,6 +53,14 @@ const Index = () => {
     }
   }
 
+  const handleScrollToLower = useCallback(() => {
+    ref.current.innerFn && ref.current.innerFn()
+  }, [])
+
+  const handleInputChange = (e: any) => {
+    setSearchTitle(e.detail.value)
+  }
+
   const toTop = () => {
     setScroll({
       top: Math.random(),
@@ -72,9 +69,9 @@ const Index = () => {
     })
   }
 
-  const handleNavClick = (item: any) => {
-    setCurrentNav(item)
-  }
+  const getPhotoRender = useMemo(() => (
+    <Photos type="4" title={searchTitle} ref={ref} />
+  ), [searchTitle])
 
   return (
     <View className="index">
@@ -85,15 +82,17 @@ const Index = () => {
         scrollWithAnimation
         scrollTop={scroll.top}
         onScroll={handleScroll}
+        lowerThreshold={30}
+        onScrollToLower={handleScrollToLower}
       >
         <View className="header">
-          <View className="logo">logo</View>
-          <View className="title">图集视频案例</View>
+          <View className="logo"></View>
+          <View className="title">国脉房产案例集</View>
         </View>
         <View className="search">
           <View className="search-content">
             <View className="iconfont icon-search"></View>
-            <Input className="search-input" placeholder="搜索"></Input>
+            <Input className="search-input" placeholder="搜索" onBlur={handleInputChange}></Input>
           </View>
         </View>
         <View className={classnames('indexnav', scroll.fixed && 'fixed')} style={scroll.style}>
@@ -104,17 +103,16 @@ const Index = () => {
                   key={index}
                   onClick={() => handleNavClick(item)}
                   className={classnames('indexnav-item', currentNav.id === item.id && 'actived')}>
-                  <View className="chinese-name">{item.chineseName}</View>
-                  <View className="english-name">{item.englishName}</View>
+                  <View className="name">{item.title}</View>
                 </View>
               ))
             }
           </ScrollView>
         </View>
         <View className="content">
-          {currentNav.englishName === 'Photo' && <Photos />}
-          {currentNav.englishName === 'Video' && <Videos />}
-          {currentNav.englishName === 'Media' && <Articles />}
+          {currentNav.type === '4' && getPhotoRender}
+          {currentNav.type === '5' && <Videos />}
+          {currentNav.type === '3' && <Articles />}
         </View>
       </ScrollView>
       <View className="action">
@@ -138,4 +136,5 @@ const Index = () => {
     </View>
   )
 }
+
 export default Index

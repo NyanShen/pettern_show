@@ -44,9 +44,10 @@
             text-align: center;
             margin: 32px;
 
-            .english-name {
-                font-size: $font-26;
+            .name {
+                font-weight: bold;
             }
+
             &.actived {
                 color: $search-actived;
                 border-bottom: 1px solid $search-actived;
@@ -60,6 +61,7 @@
     right: 40px;
     bottom: 60px;
     transition: 0.3s;
+    z-index: 12;
     &-item {
         display: flex;
         flex-direction: column;

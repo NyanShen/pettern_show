@@ -10,7 +10,7 @@ const getCityAlias = (): string => {
 }
 
 const agreement: string = 'http://'
-const topDomain: string = '.fczx.com'
+const topDomain: string = '.case.com'
 const app: any = {};
 app.apiUrl = (uri: string) => {
     return `${agreement}api${topDomain}${uri}`

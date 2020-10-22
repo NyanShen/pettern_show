@@ -4,6 +4,7 @@ export default {
   pages: [
     'pages/index/index',
     'pages/photo/index',
+    'pages/video/index',
     'pages/article/index',
   ],
   window: {
