@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 
 import app from '@services/request'
@@ -20,11 +21,16 @@ const Articles = () => {
         })
     }, [])
 
+    const toArticleDetail = (id: string) => {
+        Taro.navigateTo({
+            url: `/pages/article/index?id=${id}`
+        })
+    }
     return (
         <View className="articles view-content">
             {
                 articles.map((item: any, index: number) => (
-                    <View key={index} className="item">
+                    <View key={index} className="item" onClick={() => toArticleDetail(item.id)}>
                         <View className="item-text">
                             <View className="title">{item.title}</View>
                             <View className="describe">{item.description}</View>

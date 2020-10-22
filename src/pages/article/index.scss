@@ -1,0 +1,31 @@
+.article {
+    &-header {
+        padding: 30px;
+        .title {
+            font-size: $font-36;
+            margin-bottom: 30px;
+        }
+        .publish {
+            display: flex;
+            .item {
+                font-size: $font-26;
+                margin-right: 20px;
+            }
+            .tag {
+                background-color: $bg-color;
+                font-size: $font-24;
+                padding: 2px 8px;
+                color: $text-color;
+            }
+            .link {
+                color: $pink;
+            }
+            .name {
+                color: $desc-color;
+            }
+            .date {
+                color: $desc-color;
+            }
+        }
+    }
+}

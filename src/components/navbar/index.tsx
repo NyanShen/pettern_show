@@ -56,7 +56,7 @@ const NavBar = (props: IProps) => {
         <View style={{ height: appHeaderHeight }}>
             <View className="navbar" style={style}>
                 {home && <View className="iconfont iconhome" onClick={() => handleHomeClick()}></View>}
-                {back && <View className="iconfont iconarrow-left-bold back" onClick={() => handleBackClick()}></View>}
+                {back && <View className="iconfont icon-arrow-left-bold back" onClick={() => handleBackClick()}></View>}
                 {iconOther && <View className={classnames('iconfont', iconClass)} style={iconStyle} onClick={props.callback}>{icon}</View>}
                 <View className="navbar-title">{props.title}</View>
             </View>
