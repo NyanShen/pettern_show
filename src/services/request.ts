@@ -1,23 +1,11 @@
 import Taro from '@tarojs/taro'
 import storage from '@utils/storage'
 
-const getCityAlias = (): string => {
-    const city = storage.getItem('city')
-    if (city) {
-        return city.alias
-    }
-    return ''
-}
-
 const agreement: string = 'http://'
-const topDomain: string = '.case.com'
+const topDomain: string = 'www.case.com'
 const app: any = {};
 app.apiUrl = (uri: string) => {
-    return `${agreement}api${topDomain}${uri}`
-}
-
-app.areaApiUrl = (uri: string) => {
-    return `${agreement}${getCityAlias()}.api${topDomain}${uri}`
+    return `${agreement}${topDomain}${uri}`
 }
 
 app.testApiUrl = (uri: string) => {

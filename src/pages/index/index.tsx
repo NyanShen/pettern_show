@@ -23,7 +23,8 @@ const Index = () => {
     app.request({
       url: app.apiUrl(api.getNewsCate),
       data: {
-        status: 1
+        status: 1,
+        module_id: 1
       }
     }, { loading: false }).then((result: any) => {
       setNavData(result)

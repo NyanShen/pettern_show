@@ -1,8 +1,8 @@
 {
   "miniprogramRoot": "dist/",
-  "projectname": "mini",
-  "description": "fczx mini",
-  "appid": "wxb1a8fb08acb02def",
+  "projectname": "caseshow",
+  "description": "caseshow",
+  "appid": "wx975b73bb05e0d008",
   "setting": {
     "urlCheck": true,
     "es6": false,

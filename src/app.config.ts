@@ -6,6 +6,7 @@ export default {
     'pages/video/index',
     'pages/photo/index',
     'pages/article/index',
+    'pages/article/source',
   ],
   window: {
     backgroundTextStyle: 'light',

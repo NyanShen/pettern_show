@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { ScrollView, View, Image } from '@tarojs/components'
-import { map } from 'lodash'
+import map from 'lodash/map'
 
 import api from '@services/api'
 import app from '@services/request'

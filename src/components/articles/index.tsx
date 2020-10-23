@@ -59,11 +59,15 @@ const Articles = (props: INewsProps, ref: any) => {
 
     const toArticleDetail = (item: any) => {
         if (item.source) {
-            return
+            const source = encodeURIComponent(item.source)
+            Taro.navigateTo({
+                url: `/pages/article/source?source=${source}`
+            })
+        } else {
+            Taro.navigateTo({
+                url: `/pages/article/index?id=${item.id}`
+            })
         }
-        Taro.navigateTo({
-            url: `/pages/article/index?id=${item.id}`
-        })
     }
     return (
         <View className="articles view-content">

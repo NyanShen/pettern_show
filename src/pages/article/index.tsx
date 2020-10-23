@@ -29,7 +29,7 @@ const Article = () => {
             <View className="article-header">
                 <View className="title">{article.title}</View>
                 <View className="publish">
-                    <View className="item date">{formatTimestamp(article.modified, 'yy-MM-dd')}</View>
+                    <View className="item date">{article.modified && formatTimestamp(article.modified, 'yy-MM-dd')}</View>
                 </View>
             </View>
             <View className="article-content view-content">
