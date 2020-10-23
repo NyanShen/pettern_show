@@ -16,7 +16,7 @@ const Index = () => {
   const [searchTitle, setSearchTitle] = useState<string>('')
   const [scroll, setScroll] = useState<any>({})
   const [navData, setNavData] = useState<any[]>([])
-  const [currentNav, setCurrentNav] = useState<any>({})
+  const [currentType, setCurrentType] = useState<any>('')
   const ref = useRef<any>({})
 
   useEffect(() => {
@@ -27,12 +27,12 @@ const Index = () => {
       }
     }, { loading: false }).then((result: any) => {
       setNavData(result)
-      setCurrentNav(result[0])
+      setCurrentType(result[0].type)
     })
   }, [])
 
   const handleNavClick = (item: any) => {
-    setCurrentNav(item)
+    setCurrentType(item.type)
   }
 
   const handleScroll = (e: any) => {
@@ -69,9 +69,21 @@ const Index = () => {
     })
   }
 
-  const getPhotoRender = useMemo(() => (
-    <Photos type="4" title={searchTitle} ref={ref} />
-  ), [searchTitle])
+  const photoTypes = ['4']
+  const videoTypes = ['5']
+  const articleTypes = ['1', '2', '3', '6']
+
+  const PhotoRender = useMemo(() => (
+    <Photos type={currentType} title={searchTitle} ref={ref} />
+  ), [currentType, searchTitle])
+
+  const VideoRender = useMemo(() => (
+    <Videos type={currentType} title={searchTitle} ref={ref} />
+  ), [currentType, searchTitle])
+
+  const ArticleRender = useMemo(() => (
+    <Articles type={currentType} title={searchTitle} ref={ref} />
+  ), [currentType, searchTitle])
 
   return (
     <View className="index">
@@ -102,7 +114,7 @@ const Index = () => {
                 <View
                   key={index}
                   onClick={() => handleNavClick(item)}
-                  className={classnames('indexnav-item', currentNav.id === item.id && 'actived')}>
+                  className={classnames('indexnav-item', currentType === item.type && 'actived')}>
                   <View className="name">{item.title}</View>
                 </View>
               ))
@@ -110,9 +122,9 @@ const Index = () => {
           </ScrollView>
         </View>
         <View className="content">
-          {currentNav.type === '4' && getPhotoRender}
-          {currentNav.type === '5' && <Videos />}
-          {currentNav.type === '3' && <Articles />}
+          {photoTypes.includes(currentType) && PhotoRender}
+          {videoTypes.includes(currentType) && VideoRender}
+          {articleTypes.includes(currentType) && ArticleRender}
         </View>
       </ScrollView>
       <View className="action">

@@ -1,25 +1,61 @@
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 
 import app from '@services/request'
 import api from '@services/api'
+import { getTotalPage, INIT_PAGE, IPage } from '@utils/page'
+import { INewsParam, INewsProps, INIT_NEWS_PARAM } from '@constants/common'
 import './index.scss'
 
-const Articles = () => {
+const Articles = (props: INewsProps, ref: any) => {
+    const PAGE_LIMIT = 10
+    const [page, setPage] = useState<IPage>(INIT_PAGE)
+    const [param, setParam] = useState<INewsParam>(INIT_NEWS_PARAM)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [showEmpty, setShowEmpty] = useState<boolean>(false)
     const [articles, setArticles] = useState<any[]>([])
 
     useEffect(() => {
         app.request({
-            url: app.testApiUrl(api.getArticleList),
+            url: app.apiUrl(api.newsList),
             data: {
-                page: 1,
-                limit: 20
+                page: param.currentPage,
+                limit: PAGE_LIMIT,
+                type: props.type,
+                title: props.title
             }
-        }).then((result: any) => {
-            setArticles(result.data)
+        }, { loading: false }).then((result: any) => {
+            setLoading(false)
+            const totalPage = getTotalPage(PAGE_LIMIT, result.pagination.totalCount)
+            setShowEmpty(totalPage <= INIT_NEWS_PARAM.currentPage)
+            setPage({
+                totalCount: result.pagination.totalCount,
+                totalPage
+            })
+
+            if (param.currentPage === 1) {
+                setArticles(result.data)
+            } else {
+                setArticles([...articles, ...result.data])
+            }
         })
-    }, [])
+    }, [param.currentPage, props.title, props.type])
+
+    useImperativeHandle(ref, () => ({
+        innerFn: handleScrollToLower
+    }), [page.totalPage, param.currentPage])
+
+    const handleScrollToLower = useCallback(() => {
+        if (page.totalPage > param.currentPage) {
+            setLoading(true)
+            setParam({
+                currentPage: param.currentPage + 1
+            })
+        } else {
+            setShowEmpty(true)
+        }
+    }, [page.totalPage, param.currentPage])
 
     const toArticleDetail = (id: string) => {
         Taro.navigateTo({
@@ -41,9 +77,20 @@ const Articles = () => {
                     </View>
                 ))
             }
-
+            {
+                loading &&
+                <View className="empty-container">
+                    <Text>正在加载中...</Text>
+                </View>
+            }
+            {
+                showEmpty &&
+                <View className="empty-container">
+                    <Text>没有更多数据了</Text>
+                </View>
+            }
         </View>
     )
 }
 
-export default React.memo(Articles)
+export default forwardRef(Articles)

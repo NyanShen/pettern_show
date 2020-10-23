@@ -6,25 +6,14 @@ import app from '@services/request'
 import api from '@services/api'
 import { getTotalPage, INIT_PAGE, IPage } from '@utils/page'
 
+import { INewsParam, INewsProps, INIT_NEWS_PARAM } from '@constants/common'
 import './index.scss'
 
-interface IParam {
-    currentPage: number
-}
 
-const INIT_PARAM: IParam = {
-    currentPage: 1
-}
-
-interface IProps {
-    type: string,
-    title?: string
-}
-
-const Photos = (props: IProps, ref: any) => {
+const Photos = (props: INewsProps, ref: any) => {
     const PAGE_LIMIT = 10
-    const [param, setParam] = useState<IParam>(INIT_PARAM)
     const [page, setPage] = useState<IPage>(INIT_PAGE)
+    const [param, setParam] = useState<INewsParam>(INIT_NEWS_PARAM)
     const [loading, setLoading] = useState<boolean>(false)
     const [showEmpty, setShowEmpty] = useState<boolean>(false)
     const [photos, setPhotos] = useState<any[]>([])
@@ -41,7 +30,7 @@ const Photos = (props: IProps, ref: any) => {
         }, { loading: false }).then((result: any) => {
             setLoading(false)
             const totalPage = getTotalPage(PAGE_LIMIT, result.pagination.totalCount)
-            setShowEmpty(totalPage <= INIT_PARAM.currentPage)
+            setShowEmpty(totalPage <= INIT_NEWS_PARAM.currentPage)
             setPage({
                 totalCount: result.pagination.totalCount,
                 totalPage
@@ -53,7 +42,7 @@ const Photos = (props: IProps, ref: any) => {
                 setPhotos([...photos, ...result.data])
             }
         })
-    }, [param.currentPage, props.title])
+    }, [param.currentPage, props.title, props.type])
 
     useImperativeHandle(ref, () => ({
         innerFn: handleScrollToLower
