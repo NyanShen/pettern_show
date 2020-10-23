@@ -33,6 +33,7 @@ const Index = () => {
 
   const handleNavClick = (item: any) => {
     setCurrentNav(item)
+    setSearchTitle('')
   }
 
   const handleScroll = (e: any) => {
@@ -100,7 +101,7 @@ const Index = () => {
         <View className="search">
           <View className="search-content">
             <View className="iconfont icon-search"></View>
-            <Input className="search-input" placeholder="搜索" onBlur={handleInputChange}></Input>
+            <Input className="search-input" placeholder="搜索" onBlur={handleInputChange} value={searchTitle}></Input>
           </View>
         </View>
         <View className={classnames('indexnav', scroll.fixed && 'fixed')} style={scroll.style}>

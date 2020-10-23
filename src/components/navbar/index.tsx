@@ -41,7 +41,7 @@ const NavBar = (props: IProps) => {
     }
 
     const handleHomeClick = () => {
-        Taro.switchTab({
+        Taro.navigateTo({
             url: '/pages/index/index'
         })
     }

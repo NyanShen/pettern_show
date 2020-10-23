@@ -2,9 +2,9 @@ import { Config } from '@tarojs/taro';
 
 export default {
   pages: [
+    'pages/video/index',
     'pages/index/index',
     'pages/photo/index',
-    'pages/video/index',
     'pages/article/index',
   ],
   window: {
