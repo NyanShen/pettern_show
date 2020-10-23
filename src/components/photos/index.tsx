@@ -2,8 +2,8 @@ import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useStat
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 
-import app from '@services/request'
 import api from '@services/api'
+import app from '@services/request'
 import { getTotalPage, INIT_PAGE, IPage } from '@utils/page'
 
 import { INewsParam, INewsProps, INIT_NEWS_PARAM } from '@constants/common'
@@ -59,9 +59,9 @@ const Photos = (props: INewsProps, ref: any) => {
         }
     }, [page.totalPage, param.currentPage])
 
-    const toPhotoList = useCallback((id: string) => {
+    const toPhotoList = useCallback((item: any) => {
         Taro.navigateTo({
-            url: `/pages/photo/index?id=${id}`
+            url: `/pages/photo/index?id=${item.id}&title=${item.title}&subtitle=${item.sub_title}`
         })
     }, [])
 
@@ -69,7 +69,7 @@ const Photos = (props: INewsProps, ref: any) => {
         <View className="photos">
             {
                 photos.map((item: any, index: number) => (
-                    <View key={index} className="item" onClick={() => toPhotoList(item.id)}>
+                    <View key={index} className="item" onClick={() => toPhotoList(item)}>
                         <View className="item-photo">
                             <Image src={item.image_path}></Image>
                         </View>

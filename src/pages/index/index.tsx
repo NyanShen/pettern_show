@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { View, Input, ScrollView, Text } from '@tarojs/components'
+import { View, Input, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 
 import app from '@services/request'
@@ -16,7 +16,7 @@ const Index = () => {
   const [searchTitle, setSearchTitle] = useState<string>('')
   const [scroll, setScroll] = useState<any>({})
   const [navData, setNavData] = useState<any[]>([])
-  const [currentType, setCurrentType] = useState<any>('')
+  const [currentNav, setCurrentNav] = useState<any>({})
   const ref = useRef<any>({})
 
   useEffect(() => {
@@ -27,12 +27,12 @@ const Index = () => {
       }
     }, { loading: false }).then((result: any) => {
       setNavData(result)
-      setCurrentType(result[0].type)
+      setCurrentNav(result[0])
     })
   }, [])
 
   const handleNavClick = (item: any) => {
-    setCurrentType(item.type)
+    setCurrentNav(item)
   }
 
   const handleScroll = (e: any) => {
@@ -69,21 +69,17 @@ const Index = () => {
     })
   }
 
-  const photoTypes = ['4']
-  const videoTypes = ['5']
-  const articleTypes = ['1', '2', '3', '6']
-
   const PhotoRender = useMemo(() => (
-    <Photos type={currentType} title={searchTitle} ref={ref} />
-  ), [currentType, searchTitle])
+    <Photos type={currentNav.type} title={searchTitle} ref={ref} />
+  ), [currentNav.type, searchTitle])
 
   const VideoRender = useMemo(() => (
-    <Videos type={currentType} title={searchTitle} ref={ref} />
-  ), [currentType, searchTitle])
+    <Videos type={currentNav.type} title={searchTitle} ref={ref} />
+  ), [currentNav.type, searchTitle])
 
   const ArticleRender = useMemo(() => (
-    <Articles type={currentType} title={searchTitle} ref={ref} />
-  ), [currentType, searchTitle])
+    <Articles type={currentNav.type} title={searchTitle} ref={ref} />
+  ), [currentNav.type, searchTitle])
 
   return (
     <View className="index">
@@ -114,7 +110,7 @@ const Index = () => {
                 <View
                   key={index}
                   onClick={() => handleNavClick(item)}
-                  className={classnames('indexnav-item', currentType === item.type && 'actived')}>
+                  className={classnames('indexnav-item', currentNav.type === item.type && 'actived')}>
                   <View className="name">{item.title}</View>
                 </View>
               ))
@@ -122,9 +118,9 @@ const Index = () => {
           </ScrollView>
         </View>
         <View className="content">
-          {photoTypes.includes(currentType) && PhotoRender}
-          {videoTypes.includes(currentType) && VideoRender}
-          {articleTypes.includes(currentType) && ArticleRender}
+          {currentNav.module === 'image' && PhotoRender}
+          {currentNav.module === 'video' && VideoRender}
+          {currentNav.module === 'article' && ArticleRender}
         </View>
       </ScrollView>
       <View className="action">
@@ -136,14 +132,14 @@ const Index = () => {
             </View>
           </View>
         }
-        <View className="action-item">
+        {/* <View className="action-item">
           <View className="item-icon">
             <View className="iconfont icon-telephone-out"></View>
           </View>
           <View className="item-text">
             <Text>联系我们</Text>
           </View>
-        </View>
+        </View> */}
       </View>
     </View>
   )

@@ -1,29 +1,36 @@
-import React, { useState } from 'react'
-import Taro from '@tarojs/taro'
+import React, { useEffect, useState } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { ScrollView, View, Image } from '@tarojs/components'
 import { map } from 'lodash'
 
+import api from '@services/api'
+import app from '@services/request'
 import NavBar from '@components/navbar'
 import useNavData from '@hooks/useNavData'
 import './index.scss'
 
-const INIT_PHOTO = [
-    {
-        image_path: "http://192.168.2.248/assets/images/1400x933_1.jpg"
-    },
-    {
-        image_path: "http://192.168.2.248/assets/images/1400x933_6.jpg"
-    }
-]
+const INIT_PHOTO = []
 
 const PhotoList = () => {
+    const router = getCurrentInstance().router
     const { contentHeight } = useNavData()
-    const [photo] = useState<any[]>(INIT_PHOTO)
+    const [photo, setPhoto] = useState<any[]>(INIT_PHOTO)
+
+    useEffect(() => {
+        app.request({
+            url: app.apiUrl(api.getNewsImages),
+            data: {
+                id: router?.params.id
+            }
+        }).then((result: any) => {
+            setPhoto(result)
+        })
+    }, [])
 
     const handleImageClick = (imagePath: string) => {
         Taro.previewImage({
             current: imagePath,
-            urls: map(INIT_PHOTO, 'image_path')
+            urls: map(photo, 'image_path')
         })
     }
 
@@ -31,8 +38,8 @@ const PhotoList = () => {
         <View className="photo">
             <NavBar back={true} />
             <View className="header">
-                <View className="title">视觉海报输出</View>
-                <View className="sub-title">美食襄阳</View>
+                <View className="title">{router?.params.title}</View>
+                <View className="sub-title">{router?.params.subtitle}</View>
             </View>
             <ScrollView style={{ maxHeight: contentHeight }} scrollY>
                 <View className="photo-list">

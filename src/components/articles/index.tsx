@@ -57,16 +57,19 @@ const Articles = (props: INewsProps, ref: any) => {
         }
     }, [page.totalPage, param.currentPage])
 
-    const toArticleDetail = (id: string) => {
+    const toArticleDetail = (item: any) => {
+        if (item.source) {
+            return
+        }
         Taro.navigateTo({
-            url: `/pages/article/index?id=${id}`
+            url: `/pages/article/index?id=${item.id}`
         })
     }
     return (
         <View className="articles view-content">
             {
                 articles.map((item: any, index: number) => (
-                    <View key={index} className="item" onClick={() => toArticleDetail(item.id)}>
+                    <View key={index} className="item" onClick={() => toArticleDetail(item)}>
                         <View className="item-text">
                             <View className="title">{item.title}</View>
                             <View className="describe">{item.description}</View>
