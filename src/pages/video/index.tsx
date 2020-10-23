@@ -20,7 +20,6 @@ const INIT_FOLDER = {
 }
 const VideoDetail = () => {
     const router = getCurrentInstance().router
-    const videoId = router?.params.id
     const [video, setVideo] = useState<any>({})
     const [folder, setFolder] = useState<IFolder>(INIT_FOLDER)
 
@@ -28,7 +27,7 @@ const VideoDetail = () => {
         app.request({
             url: app.apiUrl(api.newsDetail),
             data: {
-                id: videoId || '1000006'
+                id: router?.params.id
             }
         }).then((result: any) => {
             setVideo(result)

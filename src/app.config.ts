@@ -2,8 +2,8 @@ import { Config } from '@tarojs/taro';
 
 export default {
   pages: [
-    'pages/video/index',
     'pages/index/index',
+    'pages/video/index',
     'pages/photo/index',
     'pages/article/index',
   ],

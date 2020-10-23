@@ -38,8 +38,8 @@ const PhotoList = () => {
         <View className="photo">
             <NavBar back={true} />
             <View className="header">
-                <View className="title">{router?.params.title}</View>
                 <View className="sub-title">{router?.params.subtitle}</View>
+                <View className="title">{router?.params.title}</View>
             </View>
             <ScrollView style={{ maxHeight: contentHeight }} scrollY>
                 <View className="photo-list">
