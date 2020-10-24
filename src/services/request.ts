@@ -1,8 +1,8 @@
 import Taro from '@tarojs/taro'
 import storage from '@utils/storage'
 
-const agreement: string = 'http://'
-const topDomain: string = 'www.case.com'
+const agreement: string = 'https://'
+const topDomain: string = 'case.xyrx.com'
 const app: any = {};
 app.apiUrl = (uri: string) => {
     return `${agreement}${topDomain}${uri}`

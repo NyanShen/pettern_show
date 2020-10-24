@@ -1,34 +1,40 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
+import isEqual from 'lodash/isEqual'
 
-import app from '@services/request'
 import api from '@services/api'
+import app from '@services/request'
+import { INewsParam } from '@constants/common'
 import { getTotalPage, INIT_PAGE, IPage } from '@utils/page'
-import { INewsParam, INewsProps, INIT_NEWS_PARAM } from '@constants/common'
 import './index.scss'
 
-const Articles = (props: INewsProps, ref: any) => {
+const Articles = (props: INewsParam, ref: any) => {
     const PAGE_LIMIT = 10
     const [page, setPage] = useState<IPage>(INIT_PAGE)
-    const [param, setParam] = useState<INewsParam>(INIT_NEWS_PARAM)
+    const [param, setParam] = useState<INewsParam>(props)
     const [loading, setLoading] = useState<boolean>(false)
     const [showEmpty, setShowEmpty] = useState<boolean>(false)
     const [articles, setArticles] = useState<any[]>([])
+    const paramRef = useRef<any>({})
 
     useEffect(() => {
+        if (isEqual(paramRef.current, param)) {
+            return
+        }
+        paramRef.current = param
         app.request({
             url: app.apiUrl(api.newsList),
             data: {
                 page: param.currentPage,
                 limit: PAGE_LIMIT,
-                type: props.type,
-                title: props.title
+                type: param.type,
+                title: param.title
             }
         }, { loading: false }).then((result: any) => {
             setLoading(false)
             const totalPage = getTotalPage(PAGE_LIMIT, result.pagination.totalCount)
-            setShowEmpty(totalPage <= INIT_NEWS_PARAM.currentPage)
+            setShowEmpty(totalPage <= props.currentPage)
             setPage({
                 totalCount: result.pagination.totalCount,
                 totalPage
@@ -40,16 +46,26 @@ const Articles = (props: INewsProps, ref: any) => {
                 setArticles([...articles, ...result.data])
             }
         })
-    }, [param.currentPage, props.title, props.type])
+    }, [param])
 
     useImperativeHandle(ref, () => ({
-        innerFn: handleScrollToLower
+        onScorllToLower: handleScrollToLower,
+        onParamChange: handleParamChange
     }), [page.totalPage, param.currentPage])
+
+    const handleParamChange = (type: string, title: string = '') => {
+        setParam({
+            type,
+            title,
+            currentPage: props.currentPage
+        })
+    }
 
     const handleScrollToLower = useCallback(() => {
         if (page.totalPage > param.currentPage) {
             setLoading(true)
             setParam({
+                ...param,
                 currentPage: param.currentPage + 1
             })
         } else {
@@ -100,4 +116,4 @@ const Articles = (props: INewsProps, ref: any) => {
     )
 }
 
-export default forwardRef(Articles)
+export default React.memo(forwardRef(Articles))

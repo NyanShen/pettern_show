@@ -2,13 +2,14 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View, Input, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 
-import app from '@services/request'
 import api from '@services/api'
+import app from '@services/request'
 import NavBar from '@components/navbar'
-import useNavData from '@hooks/useNavData'
 import Photos from '@components/photos'
 import Videos from '@components/videos'
 import Articles from '@components/articles'
+import useNavData from '@hooks/useNavData'
+import { INewsParam } from '@constants/common'
 import './index.scss'
 
 const Index = () => {
@@ -35,6 +36,7 @@ const Index = () => {
   const handleNavClick = (item: any) => {
     setCurrentNav(item)
     setSearchTitle('')
+    ref.current.onParamChange && ref.current.onParamChange(item.type)
   }
 
   const handleScroll = (e: any) => {
@@ -56,11 +58,12 @@ const Index = () => {
   }
 
   const handleScrollToLower = useCallback(() => {
-    ref.current.innerFn && ref.current.innerFn()
+    ref.current.onScorllToLower && ref.current.onScorllToLower()
   }, [])
 
-  const handleInputChange = (e: any) => {
+  const handleInputBlur = (e: any) => {
     setSearchTitle(e.detail.value)
+    ref.current.onParamChange && ref.current.onParamChange(currentNav.type, e.detail.value)
   }
 
   const toTop = () => {
@@ -71,17 +74,19 @@ const Index = () => {
     })
   }
 
-  const PhotoRender = useMemo(() => (
-    <Photos type={currentNav.type} title={searchTitle} ref={ref} />
-  ), [currentNav.type, searchTitle])
+  const INIT_NEWS_PARAM: INewsParam = {
+    type: currentNav.type,
+    title: '',
+    currentPage: 1,
+  }
 
-  const VideoRender = useMemo(() => (
-    <Videos type={currentNav.type} title={searchTitle} ref={ref} />
-  ), [currentNav.type, searchTitle])
-
-  const ArticleRender = useMemo(() => (
-    <Articles type={currentNav.type} title={searchTitle} ref={ref} />
-  ), [currentNav.type, searchTitle])
+  const module_config = useMemo(() => {
+    return {
+      'image': <Photos {...INIT_NEWS_PARAM} ref={ref} />,
+      'video': <Videos {...INIT_NEWS_PARAM} ref={ref} />,
+      'article': <Articles {...INIT_NEWS_PARAM} ref={ref} />
+    }
+  }, [currentNav.type])
 
   return (
     <View className="index">
@@ -102,7 +107,7 @@ const Index = () => {
         <View className="search">
           <View className="search-content">
             <View className="iconfont icon-search"></View>
-            <Input className="search-input" placeholder="搜索" onBlur={handleInputChange} value={searchTitle}></Input>
+            <Input className="search-input" placeholder="搜索" onBlur={handleInputBlur} value={searchTitle}></Input>
           </View>
         </View>
         <View className={classnames('indexnav', scroll.fixed && 'fixed')} style={scroll.style}>
@@ -120,9 +125,7 @@ const Index = () => {
           </ScrollView>
         </View>
         <View className="content">
-          {currentNav.module === 'image' && PhotoRender}
-          {currentNav.module === 'video' && VideoRender}
-          {currentNav.module === 'article' && ArticleRender}
+          {module_config[currentNav.module]}
         </View>
       </ScrollView>
       <View className="action">
