@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Input, ScrollView, Image, Text } from '@tarojs/components'
 import classnames from 'classnames'
@@ -10,18 +10,23 @@ import Photos from '@components/photos'
 import Videos from '@components/videos'
 import Articles from '@components/articles'
 import useNavData from '@hooks/useNavData'
-import { INewsParam } from '@constants/common'
+import { getTotalPage, INIT_PAGE, IPage } from '@utils/page'
+import { INewsParam, INIT_NEWS_PARAM } from '@constants/common'
 import './index.scss'
 
+const PAGE_LIMIT = 10
 const poster_url = 'https://case.xyrx.com/static/www/images/share.jpg'
+
 const Index = () => {
   const { appHeaderHeight, contentHeight } = useNavData()
-  const [searchTitle, setSearchTitle] = useState<string>('')
-  const [scroll, setScroll] = useState<any>({})
-  const [navData, setNavData] = useState<any[]>([])
-  const [currentNav, setCurrentNav] = useState<any>({})
+  const [page, setPage] = useState<IPage>(INIT_PAGE)
+  const [param, setParam] = useState<INewsParam>(INIT_NEWS_PARAM)
   const [poster, setPoster] = useState<boolean>(false)
-  const ref = useRef<any>({})
+  const [loading, setLoading] = useState<boolean>(false)
+  const [showEmpty, setShowEmpty] = useState<boolean>(false)
+  const [scroll, setScroll] = useState<any>({})
+  const [listData, setListData] = useState<any[]>([])
+  const [navData, setNavData] = useState<any[]>([])
 
   useEffect(() => {
     app.request({
@@ -31,15 +36,78 @@ const Index = () => {
         module_id: 1
       }
     }, { loading: false }).then((result: any) => {
+      const initData = result[0]
       setNavData(result)
-      setCurrentNav(result[0])
+      setParam({
+        ...param,
+        type: initData.type,
+        module: initData.module
+      })
     })
   }, [])
 
+  useEffect(() => {
+    if (param.type) {
+      app.request({
+        url: app.apiUrl(api.newsList),
+        data: {
+          page: param.currentPage,
+          limit: PAGE_LIMIT,
+          type: param.type,
+          title: param.title
+        }
+      }, { loading: false }).then((result: any) => {
+        setLoading(false)
+        const totalPage = getTotalPage(PAGE_LIMIT, result.pagination.totalCount)
+        setShowEmpty(totalPage <= INIT_NEWS_PARAM.currentPage)
+        setPage({
+          totalCount: result.pagination.totalCount,
+          totalPage
+        })
+        if (param.currentPage === 1) {
+          setListData(result.data)
+        } else {
+          setListData([...listData, ...result.data])
+        }
+      })
+    }
+  }, [param.type, param.title, param.currentPage])
+
+  const handleInputBlur = (e: any) => {
+    setParam({
+      ...param,
+      title: e.detail.value,
+      currentPage: INIT_NEWS_PARAM.currentPage
+    })
+  }
+
   const handleNavClick = (item: any) => {
-    setCurrentNav(item)
-    setSearchTitle('')
-    ref.current.onParamChange && ref.current.onParamChange(item.type)
+    setParam({
+      title: '',
+      type: item.type,
+      module: item.module,
+      currentPage: INIT_NEWS_PARAM.currentPage
+    })
+  }
+
+  const handleScrollToLower = useCallback(() => {
+    if (page.totalPage > param.currentPage) {
+      setLoading(true)
+      setParam({
+        ...param,
+        currentPage: param.currentPage + 1
+      })
+    } else {
+      setShowEmpty(true)
+    }
+  }, [page.totalPage, param.currentPage])
+
+  const toTop = () => {
+    setScroll({
+      top: Math.random(),
+      fixed: false,
+      style: {}
+    })
   }
 
   const handleScroll = (e: any) => {
@@ -58,23 +126,6 @@ const Index = () => {
         style: {}
       })
     }
-  }
-
-  const handleScrollToLower = useCallback(() => {
-    ref.current.onScorllToLower && ref.current.onScorllToLower()
-  }, [])
-
-  const handleInputBlur = (e: any) => {
-    setSearchTitle(e.detail.value)
-    ref.current.onParamChange && ref.current.onParamChange(currentNav.type, e.detail.value)
-  }
-
-  const toTop = () => {
-    setScroll({
-      top: Math.random(),
-      fixed: false,
-      style: {}
-    })
   }
 
   const generatePoster = () => {
@@ -124,19 +175,13 @@ const Index = () => {
     })
   }
 
-  const INIT_NEWS_PARAM: INewsParam = {
-    type: currentNav.type,
-    title: '',
-    currentPage: 1,
-  }
-
   const module_config = useMemo(() => {
     return {
-      'image': <Photos {...INIT_NEWS_PARAM} ref={ref} />,
-      'video': <Videos {...INIT_NEWS_PARAM} ref={ref} />,
-      'article': <Articles {...INIT_NEWS_PARAM} ref={ref} />
+      'image': <Photos photos={listData} />,
+      'video': <Videos videos={listData} />,
+      'article': <Articles articles={listData} />
     }
-  }, [currentNav.type])
+  }, [listData])
 
   return (
     <View className="index">
@@ -157,7 +202,7 @@ const Index = () => {
         <View className="search">
           <View className="search-content">
             <View className="iconfont icon-search"></View>
-            <Input className="search-input" placeholder="搜索" onBlur={handleInputBlur} value={searchTitle}></Input>
+            <Input className="search-input" placeholder="搜索" onBlur={handleInputBlur} value={param.title}></Input>
           </View>
         </View>
         <View className={classnames('indexnav', scroll.fixed && 'fixed')} style={scroll.style}>
@@ -167,7 +212,7 @@ const Index = () => {
                 <View
                   key={index}
                   onClick={() => handleNavClick(item)}
-                  className={classnames('indexnav-item', currentNav.type === item.type && 'actived')}>
+                  className={classnames('indexnav-item', param.type === item.type && 'actived')}>
                   <View className="name">{item.title}</View>
                 </View>
               ))
@@ -175,7 +220,19 @@ const Index = () => {
           </ScrollView>
         </View>
         <View className="content">
-          {module_config[currentNav.module]}
+          {module_config[param.module]}
+          {
+            loading &&
+            <View className="empty-container">
+              <Text>正在加载中...</Text>
+            </View>
+          }
+          {
+            showEmpty &&
+            <View className="empty-container">
+              <Text>没有更多数据了</Text>
+            </View>
+          }
         </View>
       </ScrollView>
       <View className="action">
@@ -188,7 +245,7 @@ const Index = () => {
           </View>
         }
         {
-          currentNav.module === 'image' &&
+          param.module === 'image' &&
           <View className="action-item" onClick={generatePoster}>
             <View className="item-icon">
               <View className="iconfont icon-picture"></View>
