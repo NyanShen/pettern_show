@@ -15,6 +15,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-picture:before {
+  content: "\e67c";
+}
+
 .icon-home:before {
   content: "\e608";
 }

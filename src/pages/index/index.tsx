@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { View, Input, ScrollView } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { View, Input, ScrollView, Image, Text } from '@tarojs/components'
 import classnames from 'classnames'
 
 import api from '@services/api'
@@ -12,12 +13,14 @@ import useNavData from '@hooks/useNavData'
 import { INewsParam } from '@constants/common'
 import './index.scss'
 
+const poster_url = 'https://case.xyrx.com/static/www/images/share.jpg'
 const Index = () => {
   const { appHeaderHeight, contentHeight } = useNavData()
   const [searchTitle, setSearchTitle] = useState<string>('')
   const [scroll, setScroll] = useState<any>({})
   const [navData, setNavData] = useState<any[]>([])
   const [currentNav, setCurrentNav] = useState<any>({})
+  const [poster, setPoster] = useState<boolean>(false)
   const ref = useRef<any>({})
 
   useEffect(() => {
@@ -71,6 +74,42 @@ const Index = () => {
       top: Math.random(),
       fixed: false,
       style: {}
+    })
+  }
+
+  const handleSavePoster = () => {
+    Taro.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.writePhotosAlbum']) {
+          posterHandler()
+        } else {
+          Taro.authorize({
+            scope: 'scope.writePhotosAlbum',
+            success: () => {
+              posterHandler()
+            }
+          })
+        }
+      }
+    })
+  }
+
+  const posterHandler = () => {
+    Taro.downloadFile({
+      url: poster_url,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          Taro.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success() {
+              Taro.showToast({
+                title: '保存成功',
+                icon: 'none'
+              })
+            }
+          })
+        }
+      }
     })
   }
 
@@ -137,15 +176,30 @@ const Index = () => {
             </View>
           </View>
         }
-        {/* <View className="action-item">
-          <View className="item-icon">
-            <View className="iconfont icon-telephone-out"></View>
+        {
+          currentNav.module === 'image' &&
+          <View className="action-item" onClick={() => setPoster(true)}>
+            <View className="item-icon">
+              <View className="iconfont icon-picture"></View>
+            </View>
+            <View className="item-text">生成海报</View>
           </View>
-          <View className="item-text">
-            <Text>联系我们</Text>
-          </View>
-        </View> */}
+        }
       </View>
+      {
+        poster &&
+        <View className="poster">
+          <View className="mask show" onClick={() => setPoster(false)}></View>
+          <View className="poster-content">
+            <View className="poster-image">
+              <Image src={poster_url} mode="widthFix"></Image>
+            </View>
+            <View className="btn btn-blue" onClick={handleSavePoster}>
+              <Text>保存海报</Text>
+            </View>
+          </View>
+        </View>
+      }
     </View>
   )
 }
