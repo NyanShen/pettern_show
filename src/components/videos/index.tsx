@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useShareAppMessage } from '@tarojs/taro'
-import { View, Video, Button, Text } from '@tarojs/components'
+import { View, Image, Video, Button, Text } from '@tarojs/components'
 import classnames from 'classnames'
 import './index.scss'
 interface IProps {
@@ -9,6 +9,7 @@ interface IProps {
 
 const Videos = (props: IProps) => {
     const [folder, setFolder] = useState<boolean>(false)
+    const [video, setVideo] = useState<any>({})
 
     useShareAppMessage((res: any) => {
         const index = res.target.dataset.index
@@ -38,16 +39,24 @@ const Videos = (props: IProps) => {
             {
                 props.videos.map((item: any, index: number) => (
                     <View key={index} className="item">
-                        <View className="item-video">
-                            <Video
-                                id='video'
-                                style={{ width: '100%' }}
-                                src={item.video_path}
-                                controls={true}
-                                loop={false}
-                                muted={false}
-                            />
-                        </View>
+                        {
+                            item.id === video.id ?
+                                <View className="item-video">
+                                    <Video
+                                        id='video'
+                                        style={{ width: '100%' }}
+                                        src={video.video_path}
+                                        controls={true}
+                                        loop={false}
+                                        muted={false}
+                                        autoplay={true}
+                                    />
+                                </View> :
+                                <View className="item-video" onClick={() => setVideo(item)}>
+                                    <Image src={item.image_path}></Image>
+                                    <View className="iconfont icon-video"></View>
+                                </View>
+                        }
                         <View className="item-text">
                             <View className="title">{item.title}</View>
                             <Button className="button" openType="share" data-index={index}>

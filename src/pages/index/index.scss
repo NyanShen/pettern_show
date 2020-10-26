@@ -85,7 +85,7 @@
 .action {
     position: fixed;
     right: 40px;
-    bottom: 60px;
+    bottom: 80px;
     transition: 0.3s;
     z-index: 12;
     &-item {
@@ -112,8 +112,8 @@
         }
         .item-text {
             font-weight: bold;
-            font-size: $font-basic;
-            margin-top: 10px;
+            font-size: $font-26;
+            line-height: 46px;
             color: $white;
         }
     }
