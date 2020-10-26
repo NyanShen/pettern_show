@@ -77,6 +77,17 @@ const Index = () => {
     })
   }
 
+  const generatePoster = () => {
+    Taro.showLoading({
+      title: '生成海报中......',
+      mask: true
+    })
+    setTimeout(() => {
+      setPoster(true)
+      Taro.hideLoading()
+    }, 1000)
+  }
+
   const handleSavePoster = () => {
     Taro.getSetting({
       success: (res) => {
@@ -178,7 +189,7 @@ const Index = () => {
         }
         {
           currentNav.module === 'image' &&
-          <View className="action-item" onClick={() => setPoster(true)}>
+          <View className="action-item" onClick={generatePoster}>
             <View className="item-icon">
               <View className="iconfont icon-picture"></View>
             </View>
