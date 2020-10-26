@@ -2,13 +2,10 @@ import React from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 
+import { INewsProps } from '@constants/common'
 import './index.scss'
 
-interface IProps {
-    articles: any[]
-}
-
-const Articles = (props: IProps) => {
+const Articles = (props: INewsProps) => {
     
     const toArticleDetail = (item: any) => {
         if (item.source) {
@@ -25,7 +22,7 @@ const Articles = (props: IProps) => {
     return (
         <View className="articles view-content">
             {
-                props.articles.map((item: any, index: number) => (
+                props.list.map((item: any, index: number) => (
                     <View key={index} className="item" onClick={() => toArticleDetail(item)}>
                         <View className="item-text">
                             <View className="title">{item.title}</View>

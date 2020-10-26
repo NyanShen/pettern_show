@@ -10,4 +10,8 @@ export const INIT_NEWS_PARAM: INewsParam = {
     title: '',
     module: '',
     currentPage: 1,
-  }
+}
+
+export interface INewsProps {
+    list: any[]
+}

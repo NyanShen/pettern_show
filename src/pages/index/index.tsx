@@ -177,9 +177,9 @@ const Index = () => {
 
   const module_config = useMemo(() => {
     return {
-      'image': <Photos photos={listData} />,
-      'video': <Videos videos={listData} />,
-      'article': <Articles articles={listData} />
+      'image': <Photos list={listData} />,
+      'video': <Videos list={listData} />,
+      'article': <Articles list={listData} />
     }
   }, [listData])
 

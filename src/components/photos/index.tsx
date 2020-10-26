@@ -2,13 +2,10 @@ import React, { useCallback } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 
+import { INewsProps } from '@constants/common'
 import './index.scss'
 
-interface IProps {
-    photos: any[]
-}
-
-const Photos = (props: IProps) => {
+const Photos = (props: INewsProps) => {
 
     const toPhotoList = useCallback((item: any) => {
         Taro.navigateTo({
@@ -19,7 +16,7 @@ const Photos = (props: IProps) => {
     return (
         <View className="photos">
             {
-                props.photos.map((item: any, index: number) => (
+                props.list.map((item: any, index: number) => (
                     <View key={index} className="item" onClick={() => toPhotoList(item)}>
                         <View className="item-photo">
                             <Image src={item.image_path}></Image>
