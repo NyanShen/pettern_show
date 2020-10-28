@@ -48,6 +48,7 @@ const Index = () => {
 
   useEffect(() => {
     if (param.type) {
+      setLoading(true)
       app.request({
         url: app.apiUrl(api.newsList),
         data: {
@@ -93,7 +94,6 @@ const Index = () => {
 
   const handleScrollToLower = useCallback(() => {
     if (page.totalPage > param.currentPage) {
-      setLoading(true)
       setParam({
         ...param,
         currentPage: param.currentPage + 1
@@ -229,7 +229,7 @@ const Index = () => {
             </View>
           }
           {
-            showEmpty &&
+            showEmpty && !loading &&
             <View className="empty-container">
               <Text>没有更多数据了</Text>
             </View>
