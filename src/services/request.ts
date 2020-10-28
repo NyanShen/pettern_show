@@ -9,7 +9,7 @@ app.apiUrl = (uri: string) => {
 }
 
 app.testApiUrl = (uri: string) => {
-    return `${agreement}192.168.2.248:12306${uri}`
+    return `http://192.168.2.248:12306${uri}`
 }
 
 

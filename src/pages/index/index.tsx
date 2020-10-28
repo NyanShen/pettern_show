@@ -82,6 +82,7 @@ const Index = () => {
   }
 
   const handleNavClick = (item: any) => {
+    setListData([])
     setParam({
       title: '',
       type: item.type,
