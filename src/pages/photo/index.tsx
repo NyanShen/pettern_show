@@ -46,7 +46,7 @@ const PhotoList = () => {
                     {
                         photo.map((item: any, index: number) => (
                             <View key={index} className="photo-item" onClick={() => handleImageClick(item.image_path)}>
-                                <Image src={item.image_path}></Image>
+                                <Image src={item.image_path} mode="aspectFill"></Image>
                             </View>
                         ))
                     }

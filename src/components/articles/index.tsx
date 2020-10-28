@@ -29,7 +29,7 @@ const Articles = (props: INewsProps) => {
                             <View className="describe">{item.description}</View>
                         </View>
                         <View className="item-photo">
-                            <Image src={item.image_path}></Image>
+                            <Image src={item.image_path} mode="aspectFill"></Image>
                         </View>
                     </View>
                 ))

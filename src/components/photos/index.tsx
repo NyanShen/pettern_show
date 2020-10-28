@@ -19,7 +19,7 @@ const Photos = (props: INewsProps) => {
                 props.list.map((item: any, index: number) => (
                     <View key={index} className="item" onClick={() => toPhotoList(item)}>
                         <View className="item-photo">
-                            <Image src={item.image_path}></Image>
+                            <Image src={item.image_path} mode="aspectFill"></Image>
                         </View>
                         <View className="item-text">
                             <View className="title">{item.title}</View>

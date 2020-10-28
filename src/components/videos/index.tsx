@@ -52,7 +52,7 @@ const Videos = (props: INewsProps) => {
                                     />
                                 </View> :
                                 <View className="item-video" onClick={() => setVideo(item)}>
-                                    <Image src={item.image_path}></Image>
+                                    <Image src={item.image_path} mode="aspectFill"></Image>
                                     <View className="iconfont icon-video"></View>
                                 </View>
                         }
