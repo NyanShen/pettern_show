@@ -7,9 +7,11 @@ import './index.scss'
 
 const Photos = (props: INewsProps) => {
 
+    const base_url = `/pages/${props.type}/index`
+
     const toPhotoList = useCallback((item: any) => {
         Taro.navigateTo({
-            url: `/pages/${props.type}/index?id=${item.id}&title=${item.title}&subtitle=${item.sub_title}`
+            url: `${base_url}?id=${item.id}&title=${item.title}&subtitle=${item.sub_title}`
         })
     }, [])
 

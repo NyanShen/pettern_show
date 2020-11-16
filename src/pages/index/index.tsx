@@ -181,10 +181,10 @@ const Index = () => {
 
   const module_config = useMemo(() => {
     return {
-      'image': <Photos list={listData} type="photo" />,
-      'big-image': <Photos list={listData} type="design" />,
-      'video': <Videos list={listData} />,
-      'article': <Articles list={listData} />
+      'image': <Photos key={0} list={listData} type="photo" />,
+      'big-image': <Photos key={1} list={listData} type="design" />,
+      'video': <Videos key={0} list={listData} />,
+      'article': <Articles key={0} list={listData} />
     }
   }, [listData])
 
