@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { getCurrentInstance } from '@tarojs/taro'
 import { RichText, View } from '@tarojs/components'
-import NavBar from '@components/navbar'
 
 import api from '@services/api'
 import app from '@services/request'
+import NavBar from '@components/navbar'
 import { formatTimestamp } from '@utils/index'
 import './index.scss'
 

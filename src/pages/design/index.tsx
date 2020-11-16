@@ -11,10 +11,10 @@ import './index.scss'
 
 const INIT_PHOTO = []
 
-const PhotoList = () => {
+const DesignList = () => {
     const router = getCurrentInstance().router
     const { contentHeight } = useNavData()
-    const [photo, setPhoto] = useState<any[]>(INIT_PHOTO)
+    const [design, setDesign] = useState<any[]>(INIT_PHOTO)
 
     useEffect(() => {
         app.request({
@@ -23,29 +23,29 @@ const PhotoList = () => {
                 id: router?.params.id
             }
         }).then((result: any) => {
-            setPhoto(result)
+            setDesign(result)
         })
     }, [])
 
     const handleImageClick = (imagePath: string) => {
         Taro.previewImage({
             current: imagePath,
-            urls: map(photo, 'image_path')
+            urls: map(design, 'image_path')
         })
     }
 
     return (
-        <View className="photo">
+        <View className="design">
             <NavBar back={true} />
             <ScrollView style={{ maxHeight: contentHeight }} scrollY>
                 <View className="header">
                     <View className="sub-title">{router?.params.subtitle}</View>
                     <View className="title">{router?.params.title}</View>
                 </View>
-                <View className="photo-list">
+                <View className="design-list">
                     {
-                        photo.map((item: any, index: number) => (
-                            <View key={index} className="photo-item" onClick={() => handleImageClick(item.image_path)}>
+                        design.map((item: any, index: number) => (
+                            <View key={index} className="design-item" onClick={() => handleImageClick(item.image_path)}>
                                 <Image src={item.image_path} mode="aspectFill"></Image>
                             </View>
                         ))
@@ -59,4 +59,4 @@ const PhotoList = () => {
     )
 }
 
-export default PhotoList
+export default DesignList

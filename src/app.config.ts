@@ -5,6 +5,7 @@ export default {
     'pages/index/index',
     'pages/video/index',
     'pages/photo/index',
+    'pages/design/index',
     'pages/article/index',
     'pages/article/source',
   ],

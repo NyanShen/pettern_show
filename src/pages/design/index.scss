@@ -1,0 +1,29 @@
+.design {
+    .header {
+        text-align: center;
+        line-height: 50px;
+        margin-bottom: 30px;
+        .sub-title {
+            font-size: $font-24;
+            color: $text-color;
+        }
+        .title {
+            font-size: $font-30;
+            font-weight: bold;
+            color: $title-color;
+        }
+    }
+    .design-list {
+        .design-item {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            border: solid $white;
+            text-align: center;
+            background-color: $bg-color;
+            Image {
+                width: 100%;
+            }
+        }
+    }
+}

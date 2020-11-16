@@ -13,5 +13,6 @@ export const INIT_NEWS_PARAM: INewsParam = {
 }
 
 export interface INewsProps {
+    type?: string
     list: any[]
 }

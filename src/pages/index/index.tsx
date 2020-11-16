@@ -14,7 +14,7 @@ import { getTotalPage, INIT_PAGE, IPage } from '@utils/page'
 import { INewsParam, INIT_NEWS_PARAM } from '@constants/common'
 import './index.scss'
 
-const PAGE_LIMIT = 10
+const PAGE_LIMIT = 20
 const poster_url = 'https://case.xyrx.com/static/www/images/share.jpg'
 
 const Index = () => {
@@ -83,6 +83,9 @@ const Index = () => {
   }
 
   const handleNavClick = (item: any) => {
+    if (item.type === param.type) {
+      return
+    }
     setListData([])
     setParam({
       title: '',
@@ -178,7 +181,8 @@ const Index = () => {
 
   const module_config = useMemo(() => {
     return {
-      'image': <Photos list={listData} />,
+      'image': <Photos list={listData} type="photo" />,
+      'big-image': <Photos list={listData} type="design" />,
       'video': <Videos list={listData} />,
       'article': <Articles list={listData} />
     }

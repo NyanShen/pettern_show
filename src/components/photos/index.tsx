@@ -9,7 +9,7 @@ const Photos = (props: INewsProps) => {
 
     const toPhotoList = useCallback((item: any) => {
         Taro.navigateTo({
-            url: `/pages/photo/index?id=${item.id}&title=${item.title}&subtitle=${item.sub_title}`
+            url: `/pages/${props.type}/index?id=${item.id}&title=${item.title}&subtitle=${item.sub_title}`
         })
     }, [])
 
