@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { ScrollView, View, Image } from '@tarojs/components'
 import map from 'lodash/map'
@@ -8,22 +8,26 @@ import app from '@services/request'
 import NavBar from '@components/navbar'
 import useNavData from '@hooks/useNavData'
 import './index.scss'
+import Loading from '@components/loading'
 
 const INIT_PHOTO = []
 
 const DesignList = () => {
     const router = getCurrentInstance().router
     const { contentHeight } = useNavData()
+    const [loading, setLoading] = useState<boolean>(false)
     const [design, setDesign] = useState<any[]>(INIT_PHOTO)
 
     useEffect(() => {
+        setLoading(true)
         app.request({
             url: app.apiUrl(api.getNewsImages),
             data: {
                 id: router?.params.id
             }
-        }).then((result: any) => {
+        }, { loading: false }).then((result: any) => {
             setDesign(result)
+            setLoading(false)
         })
     }, [])
 
@@ -33,6 +37,10 @@ const DesignList = () => {
             urls: map(design, 'image_path')
         })
     }
+
+    const renderLoading = () => useMemo(() => {
+        return <Loading loading={loading}></Loading>
+    }, [loading])
 
     return (
         <View className="design">
@@ -51,9 +59,7 @@ const DesignList = () => {
                         ))
                     }
                 </View>
-                <View className="empty-container">
-                    <View>没有更多了</View>
-                </View>
+                {renderLoading()}
             </ScrollView>
         </View>
     )

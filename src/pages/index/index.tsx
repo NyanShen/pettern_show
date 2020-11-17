@@ -13,6 +13,7 @@ import useNavData from '@hooks/useNavData'
 import { getTotalPage, INIT_PAGE, IPage } from '@utils/page'
 import { INewsParam, INIT_NEWS_PARAM } from '@constants/common'
 import './index.scss'
+import Loading from '@components/loading'
 
 const PAGE_LIMIT = 20
 const poster_url = 'https://case.xyrx.com/static/www/images/share.jpg'
@@ -55,7 +56,8 @@ const Index = () => {
           page: param.currentPage,
           limit: PAGE_LIMIT,
           type: param.type,
-          title: param.title
+          title: param.title,
+          module_id: 1
         }
       }, { loading: false }).then((result: any) => {
         setLoading(false)
@@ -188,6 +190,10 @@ const Index = () => {
     }
   }, [listData])
 
+  const renderLoading = () => useMemo(() => {
+    return <Loading loading={loading} empty={showEmpty}></Loading>
+  }, [loading, showEmpty])
+
   return (
     <View className="index">
       <NavBar />
@@ -197,7 +203,7 @@ const Index = () => {
         scrollWithAnimation
         scrollTop={scroll.top}
         onScroll={handleScroll}
-        lowerThreshold={30}
+        lowerThreshold={20}
         onScrollToLower={handleScrollToLower}
       >
         <View className="header">
@@ -226,18 +232,7 @@ const Index = () => {
         </View>
         <View className="content">
           {module_config[param.module]}
-          {
-            loading &&
-            <View className="empty-container">
-              <Text>正在加载中...</Text>
-            </View>
-          }
-          {
-            showEmpty && !loading &&
-            <View className="empty-container">
-              <Text>没有更多数据了</Text>
-            </View>
-          }
+          {renderLoading()}
         </View>
       </ScrollView>
       <View className="action">

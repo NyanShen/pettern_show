@@ -49,8 +49,12 @@ page {
 .empty-container {
   text-align: center;
   color: $desc-color;
-  font-size: $font-basic;
-  padding: 20px 0;
+  font-size: $font-26;
+  padding: 30px 0;
+
+  .loading {
+    font-size: $font-basic;
+  }
 
   .iconempty {
     font-size: 80px;
