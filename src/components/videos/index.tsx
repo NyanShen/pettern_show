@@ -16,7 +16,7 @@ const Videos = (props: INewsProps) => {
         return {
             title: target.title,
             imageUrl: target.image_path,
-            path: `/pages/video/index?id=${target.id}`
+            path: `/pages/video/index?id=${target.id}&title=${target.title}`
         }
     })
 

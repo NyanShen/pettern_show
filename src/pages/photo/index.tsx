@@ -5,7 +5,6 @@ import map from 'lodash/map'
 
 import api from '@services/api'
 import app from '@services/request'
-import NavBar from '@components/navbar'
 import useNavData from '@hooks/useNavData'
 import './index.scss'
 import Loading from '@components/loading'
@@ -43,7 +42,6 @@ const PhotoList = () => {
 
     return (
         <View className="photo">
-            <NavBar back={true} />
             <ScrollView style={{ maxHeight: contentHeight }} scrollY>
                 <View className="header">
                     <View className="sub-title">{router?.params.subtitle}</View>

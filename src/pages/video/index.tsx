@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useReady } from '@tarojs/taro'
 import { View, Video, Button, Text } from '@tarojs/components'
 import classnames from 'classnames'
 
 import api from '@services/api'
 import app from '@services/request'
-import NavBar from '@components/navbar'
 import '@components/videos/index.scss'
 import './index.scss'
 interface IFolder {
@@ -19,15 +18,21 @@ const INIT_FOLDER = {
     icon: 'icon-down'
 }
 const VideoDetail = () => {
-    const router = getCurrentInstance().router
+    const params: any = getCurrentInstance().router?.params
     const [video, setVideo] = useState<any>({})
     const [folder, setFolder] = useState<IFolder>(INIT_FOLDER)
+
+    useReady(() => {
+        Taro.setNavigationBarTitle({
+            title: params.title
+        })
+    })
 
     useEffect(() => {
         app.request({
             url: app.apiUrl(api.newsDetail),
             data: {
-                id: router?.params.id
+                id: params.id
             }
         }).then((result: any) => {
             setVideo(result)
@@ -54,7 +59,6 @@ const VideoDetail = () => {
 
     return (
         <View className="videos">
-            <NavBar title={video.title} home={true}></NavBar>
             <View className="item">
                 <View className="item-video">
                     <Video

@@ -4,7 +4,6 @@ import { RichText, View } from '@tarojs/components'
 
 import api from '@services/api'
 import app from '@services/request'
-import NavBar from '@components/navbar'
 import { formatTimestamp } from '@utils/index'
 import './index.scss'
 
@@ -25,7 +24,6 @@ const Article = () => {
     
     return (
         <View className="article">
-            <NavBar back={true}></NavBar>
             <View className="article-header">
                 <View className="title">{article.title}</View>
                 <View className="publish">

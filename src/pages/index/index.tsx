@@ -5,7 +5,6 @@ import classnames from 'classnames'
 
 import api from '@services/api'
 import app from '@services/request'
-import NavBar from '@components/navbar'
 import Photos from '@components/photos'
 import Videos from '@components/videos'
 import Articles from '@components/articles'
@@ -19,7 +18,7 @@ const PAGE_LIMIT = 20
 const poster_url = 'https://case.xyrx.com/static/www/images/share.jpg'
 
 const Index = () => {
-  const { appHeaderHeight, contentHeight } = useNavData()
+  const { contentHeight } = useNavData()
   const [page, setPage] = useState<IPage>(INIT_PAGE)
   const [param, setParam] = useState<INewsParam>(INIT_NEWS_PARAM)
   const [poster, setPoster] = useState<boolean>(false)
@@ -122,7 +121,7 @@ const Index = () => {
       setScroll({
         ...scroll,
         fixed: true,
-        style: { top: appHeaderHeight }
+        style: { top: 0 }
       })
     }
     if (top <= 200 && scroll.fixed) {
@@ -196,7 +195,6 @@ const Index = () => {
 
   return (
     <View className="index">
-      <NavBar />
       <ScrollView
         scrollY
         style={{ maxHeight: contentHeight }}
